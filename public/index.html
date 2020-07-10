@@ -68,6 +68,28 @@
  
     //   var state = "";
     //   if (getParameterByName("code"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //         {
     //           var code = getParameterByName("code");
     //             state = "login";
@@ -108,7 +130,8 @@ function displayLiffData() {
     document.getElementById('deviceOS').textContent = liff.getOS();
     document.getElementById('lineVersion').textContent = liff.getLineVersion();
    var objtest = liff.getDecodedIDToken();
- 
+   var getprofileLine = liff.getprofileLine();
+   alert(JSON.stringify(getprofileLine));
    alert(JSON.stringify(objtest));
 }
 
