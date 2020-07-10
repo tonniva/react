@@ -93,8 +93,7 @@
 
 function  initializeApp(){
 
-    const idToken = liff.getDecodedIDToken();
-    console.log(idToken) 
+     
 
     displayLiffData()
     
@@ -110,6 +109,7 @@ function displayLiffData() {
     document.getElementById('lineVersion').textContent = liff.getLineVersion();
    var objtest = liff.getDecodedIDToken();
 
+   alert(objtest);
    alert(JSON.stringify(objtest));
 }
 
