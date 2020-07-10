@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
+      <a href={`https://access.line.me/oauth2/v2.1/authorize?response_type=code&bot_prompt=normal&client_id=1653990268&redirect_uri=${window.location.origin}&scope=openid%20profile&nonce=oXd25630710034538&state=line_authorize`}> click accessline me m150 mer</a>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
