@@ -108,7 +108,9 @@ function displayLiffData() {
     document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
     document.getElementById('deviceOS').textContent = liff.getOS();
     document.getElementById('lineVersion').textContent = liff.getLineVersion();
-    document.getElementById('getDecodedIDToken').textContent = liff.getDecodedIDToken();
+   var objtest = liff.getDecodedIDToken();
+
+   alert(JSON.stringify(objtest));
 }
 
 
