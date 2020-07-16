@@ -37,224 +37,97 @@
     <script src="js/bootstrap-fullscreen-select.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/liff.js"></script>
+
   </head>
   <body> 
-
-    <div id="profileimage">
-
-    </div>
-
-    <div id="browserLanguage"> </div>
-    <div id="sdkVersion"> </div>
-    <div id="isInClient"> </div>
-    <div id="isLoggedIn"> </div>
-    <div id="deviceOS"> </div>
-    <div id="lineVersion"> </div> 
-    <div id="getDecodedIDToken"> </div> 
-    
-
-    <style>
-      #profileimage{
-        text-align: center;
-      }
-      img{ 
-        width: 200px;
-      }
-    </style>
-  <script>
-    $(document).ready(function() {   
-
-      initializeLiff("1653990268-jvoYN23Z");
+<div id="scanQrCodeButton">test</div>
  
-    //   var state = "";
-    //   if (getParameterByName("code"))
+ 
+    <script type="text/javascript">
+          
+  
+      setTimeout(function () { 
+          initializeLiff("1653990268-kXv57abe");
+      }, 1000);
 
+      function initializeLiff(myLiffId) {
 
+          // Using a Promise object
+          liff.init({
+              // use own liffId
+              liffId: myLiffId
 
+          }).then((data) => {
 
+              if (!liff.isLoggedIn()) {
 
+                  //set 'redirecUri' ที่หน้า LIFF app ใน line developer.                   
+                  var strRedirectUri = window.location.href;
+              
+                  liff.login({ redirectUri: strRedirectUri });
 
+              } else {
 
+                  liff.getProfile()
+                      .then(profile => {
 
+                        console.log(profile)
+                 
+                      })
+                      .catch((err) => {
+                          console.log('error', err);
 
+                      }); 
+              }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    //         {
-    //           var code = getParameterByName("code");
-    //             state = "login";
-    //             connect_api_auth_line_token(code);
-    //         } 
-    //  }); 
-
-    function initializeLiff(myLiffId) {
-    liff
-        .init({
-            liffId: myLiffId
-        })
-        .then(() => {
-            // start to use LIFF's api
-            initializeApp();
-        })
-        .catch((err) => {
-            document.getElementById("liffAppContent").classList.add('hidden');
-            document.getElementById("liffInitErrorMessage").classList.remove('hidden');
-        });
-}
-}); 
-
-function  initializeApp(){
-
-     
-
-    displayLiffData()
-    
-
-}
-
-function displayLiffData() {
-    document.getElementById('browserLanguage').textContent = liff.getLanguage();
-    document.getElementById('sdkVersion').textContent = liff.getVersion();
-    document.getElementById('isInClient').textContent = liff.isInClient();
-    document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
-    document.getElementById('deviceOS').textContent = liff.getOS();
-    document.getElementById('lineVersion').textContent = liff.getLineVersion();
-   var objtest = liff.getDecodedIDToken(); 
-   alert(JSON.stringify(objtest));
-}
-
-
-
-     function connect_api_auth_line_token(code){ 
-
-      var params = {};
-      params.app_id ="1530969210387145";
-      params.redirect_uri ="https://dev.buzzebees.com/Landing.aspx";
-      params.authorization_code ="4TfYff4OWtmM6GPy6qwo"; 
-      var strUrl  ="https://api.line.me/oauth2/v2.1/token";
-
-    
-     var body={};
-     body.grant_type ="authorization_code";
-     body.code=code;
-     body.redirect_uri="https://react.tonniva.vercel.app";
-     body.client_id ="1653990268";
-     body.client_secret="d4df7be8e8dacd2a4e77e006f642ecf5"; 
-  var strUrl ="https://api.line.me/oauth2/v2.1/token";
-  debugger
-var headers = null;
-debugger
-  connectBzbPost(strUrl, body,headers, function(successCallback){
-    debugger
-    getprofileLine(successCallback.access_token)
-  }, function(failCallback){
-    debugger 
-  })
-
-   }
-
-
-
-   function getprofileLine(access_token){
-     var headers = {};
-     headers.Authorization = "Bearer "+access_token;
-     var strUrl ="https://api.line.me/v2/profile";
-    var body = {};
-     connectBzbPost(strUrl, body,headers, function(successCallback){
-      var returnstg =""
-        returnstg += '<li>' + '<img src="' + successCallback.pictureUrl + '">' + '</li>';
-        returnstg += '<li>' + successCallback.displayName + '</li>';
-        returnstg += '<li>' + successCallback.userId + '</li>';
-      $('#profileimage').append($(returnstg)) 
-    debugger
-  }, function(failCallback){
-    debugger 
-  }) 
-   }
-
-
-   
-
-function connectBzbPost(strUrl, params, headers, successCallback, failCallback) {
-$.ajax({
-    type: 'POST',
-    url: strUrl,
-    data: $.param(params),
-    dataType: 'json',
-    headers: headers,
-    crossDomain: true,
-    success: successCallback,
-    error: function (xhr, type, err) {
-        console.warn("ajax error", xhr.responseJSON);
-        if (failCallback) {
-            var objError = xhr.responseJSON;
-            if (objError) {
-                failCallback(objError.error.id, objError.error.code, objError.error.message, objError.error.type);
-            } else {
-                failCallback("-9999", "-9999", "ajax error", "framework_send");
-            }
-        }
-    },
-});
-}
-
-
-     function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-  </script>
-
-  <style>
-    .mobileSelect-control{
-      word-break: break-all;
-
+          }).catch((err) => { 
+              console.log(err.code, err.message);
+          });
+      } 
+      document.getElementById('scanQrCodeButton').addEventListener('click', function() {
+        debugger
+    if (!liff.isInClient()) { 
+alert(liff.isInClient());
+    } else {
+    	if (liff.scanCode) {
+	        liff.scanCode().then(result => {
+	            // e.g. result = { value: "Hello LIFF app!" }
+	            const stringifiedResult = JSON.stringify(result);
+	            document.getElementById('scanQrField').textContent = stringifiedResult;
+	            toggleQrCodeReader();
+	        }).catch(err => {
+	            document.getElementById('scanQrField').textContent = "scanCode failed!";
+	        });
+    	}
     }
-  </style>
-    <!-- <div class="select-wrapper">
-      <select>
-        <option>Fixed</option>
-        <option>Grumpy wizards make toxic brew for the evil Queen and Jack</option>
-        <option>Quirky spud boys can jam after zapping five worthy Polysixes</option>
-        <option>The wizard quickly jinxed the gnomes before they vaporized</option>
-        <option>All questions asked by five watched experts amaze the judgeAll questions asked by five watched experts amaze the judgeAll questions asked by five watched experts amaze the judgeAll questions asked by five watched experts amaze the judge</option>
-        <optgroup label=""></optgroup>
-      </select>
-      </div> -->
-<!-- 
-      <style>
-        optgroup {
-font-size: 2em;
-        }
 
-        select input    { font-size: 2em; }
-        select select   { font-size: 2em; }
-        select option   { font-size: 2em; }
-        select optgroup { font-size: 2em; }
-      </style> -->
+    function scanCode() {
+        liff.scanCode().then(data => {
+          const stringifiedResult = JSON.stringify(data)
+          //alert(stringifiedResult)
+          fetch('/createAccount', {
+            method: 'POST',
+            mode: `cors`,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+            .then(result => {
+              alert('Add Success')
+              location.reload()
+            })
+            .catch(error => {
+              alert('errror : ', error)
+            })
+        })
+      }
+});
+  </script> 
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <div id="root"></div> 
   </body>
 </html>
