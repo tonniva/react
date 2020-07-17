@@ -96,6 +96,7 @@ alert(liff.isInClient());
 	        liff.scanCode().then(result => {
 	            // e.g. result = { value: "Hello LIFF app!" }
 	            const stringifiedResult = JSON.stringify(result);
+              alert(stringifiedResult);
 	            document.getElementById('scanQrField').textContent = stringifiedResult;
 	            toggleQrCodeReader();
 	        }).catch(err => {
